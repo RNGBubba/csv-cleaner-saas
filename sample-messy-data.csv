@@ -1,0 +1,13 @@
+name,email,phone,address,date_of_birth,salary
+  John Smith  ,JOHN@EMAIL.com,(555) 123-4567,123 Main St.,01/15/1990,75000
+john smith,JOHN@EMAIL.COM,(555)123-4567,123 Main Street,1/15/1990,75000
+JANE DOE,jane@example.com,555.456.7890,456 Oak Ave.,1985-03-22,82000
+  Bob Wilson  ,bob@example.com,5559876543,789 Pine Blvd.  ,07/04/88,91000
+Alice Johnson,alice@example.com,(555)234-5678,321 Elm Dr.,1992-11-30,68000
+Bob Wilson ,bob@example.com,555.987.6543,789 Pine Boulevard,7/4/1988,91000
+Charlie Brown,charlie@example.com,555-876-5432,654 Maple Ct.,03/14/1995,55000
+  Diana Prince  ,diana@example.com,5553210987,987 Cedar Ln.,1990-08-15,105000
+EVE ADAMS,EVE@ADAMS.COM,5554443333,555 Birch Pky,1987-12-01,72000
+Frank Miller,frank@example.com,(555) 111-2222,111 Spruce Sq.,1993-06-10,88000
+  ,ghost@example.com,,   ,  ,0
+Helen Troy,helen@example.com,5556667777,222 Willow Cir.,1991-09-25,78000

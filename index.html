@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DataCleanup Pro — Instant CSV & Excel Cleanup</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <header class="navbar">
+    <div class="nav-inner">
+      <div class="logo">
+        <span class="logo-icon">✦</span>
+        <span class="logo-text">DataCleanup<span class="logo-accent">Pro</span></span>
+      </div>
+      <nav class="nav-links">
+        <a href="#demo">Demo</a>
+        <a href="#features">Features</a>
+        <a href="#pricing">Pricing</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-inner">
+      <span class="badge">Free Demo — No Sign-up Required</span>
+      <h1>Clean Your Messy Data <span class="gradient-text">Instantly</span></h1>
+      <p class="subtitle">Upload a CSV or Excel file. Remove duplicates, fix formatting, standardize dates, phones & addresses. Download the clean result in seconds.</p>
+    </div>
+  </section>
+
+  <section id="demo" class="demo-section">
+    <div class="container">
+      <!-- Step 1: Email Gate -->
+      <div id="email-gate" class="card">
+        <h2>Get Started</h2>
+        <p class="muted">Enter your email to unlock <strong>3 free cleanups</strong> today.</p>
+        <form id="email-form" class="email-row">
+          <input type="email" id="email-input" placeholder="you@company.com" required />
+          <button type="submit" class="btn btn-primary">Start Cleaning</button>
+        </form>
+        <p id="rate-msg" class="rate-msg hidden"></p>
+      </div>
+
+      <!-- Step 2: Upload -->
+      <div id="upload-area" class="card hidden">
+        <div class="upload-header">
+          <h2>Upload Your File</h2>
+          <span id="credits-badge" class="credits-badge">3 cleanups left today</span>
+        </div>
+        <div id="drop-zone" class="drop-zone">
+          <input type="file" id="file-input" accept=".csv,.xlsx,.xls" hidden />
+          <div class="drop-content">
+            <span class="drop-icon">📁</span>
+            <p><strong>Drag & drop</strong> your file here or <label for="file-input" class="link">browse</label></p>
+            <p class="small muted">Supports .csv, .xlsx, .xls — up to 10MB</p>
+          </div>
+        </div>
+        <div id="file-info" class="file-info hidden">
+          <span id="file-name"></span>
+          <button id="process-btn" class="btn btn-primary">✨ Clean This File</button>
+        </div>
+      </div>
+
+      <!-- Step 3: Processing -->
+      <div id="processing-area" class="card hidden">
+        <div class="processing-center">
+          <div class="spinner"></div>
+          <p id="processing-status">Loading Python runtime...</p>
+        </div>
+      </div>
+
+      <!-- Step 4: Results -->
+      <div id="results-area" class="hidden">
+        <div class="card results-card">
+          <h2>🎉 Cleanup Complete</h2>
+          <div id="stats-grid" class="stats-grid"></div>
+          <div id="changes-log" class="changes-log"></div>
+        </div>
+
+        <div class="card preview-card">
+          <div class="preview-header">
+            <h3>Preview</h3>
+            <div class="preview-tabs">
+              <button id="tab-before" class="tab active">Before</button>
+              <button id="tab-after" class="tab">After</button>
+            </div>
+          </div>
+          <div class="table-wrapper">
+            <table id="preview-table"></table>
+          </div>
+        </div>
+
+        <div class="download-row">
+          <a id="download-btn" class="btn btn-primary btn-lg" download="cleaned_data.csv">⬇ Download Cleaned CSV</a>
+          <button id="reset-btn" class="btn btn-ghost">Clean Another File</button>
+        </div>
+      </div>
+
+      <!-- Out of credits -->
+      <div id="out-of-credits" class="card hidden">
+        <div class="credits-exhausted">
+          <span class="big-emoji">🚫</span>
+          <h2>Daily Limit Reached</h2>
+          <p>You've used all 3 free cleanups for today.</p>
+          <p class="muted">Want unlimited cleanups? Let's talk.</p>
+          <a href="#pricing" class="btn btn-primary btn-lg">Hire Us for Unlimited Access</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="features" class="features-section">
+    <div class="container">
+      <h2 class="section-title">What We Fix</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <span class="feature-icon">🧹</span>
+          <h3>Deduplication</h3>
+          <p>Removes exact & near-duplicate rows automatically.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">📅</span>
+          <h3>Date Standardization</h3>
+          <p>Converts mixed date formats to consistent ISO 8601.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">📞</span>
+          <h3>Phone Formatting</h3>
+          <p>Normalizes phone numbers to (XXX) XXX-XXXX format.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">📍</span>
+          <h3>Address Cleanup</h3>
+          <p>Trims whitespace, fixes casing, standardizes abbreviations.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">✂️</span>
+          <h3>Whitespace Trimming</h3>
+          <p>Strips leading/trailing spaces from every cell.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">🔤</span>
+          <h3>Case Normalization</h3>
+          <p>Fixes ALL CAPS names, inconsistent casing in text fields.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricing" class="pricing-section">
+    <div class="container">
+      <h2 class="section-title">Need More?</h2>
+      <div class="pricing-card">
+        <h3>Enterprise Data Cleanup</h3>
+        <p class="pricing-desc">Unlimited files, custom rules, API access, priority support</p>
+        <ul class="pricing-features">
+          <li>✓ Unlimited cleanups</li>
+          <li>✓ Custom cleanup rules</li>
+          <li>✓ API access for automation</li>
+          <li>✓ Batch processing (1000+ files)</li>
+          <li>✓ Priority email support</li>
+        </ul>
+        <a href="mailto:hello@datacleanuppro.com?subject=Enterprise%20Data%20Cleanup%20Inquiry" class="btn btn-primary btn-lg">Get a Quote</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>© 2026 DataCleanup Pro · Free demo with 3 daily cleanups · <a href="mailto:hello@datacleanuppro.com">Contact Us</a></p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
