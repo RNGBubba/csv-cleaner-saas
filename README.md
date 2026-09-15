@@ -2,7 +2,7 @@
 
 Free online tool to clean messy CSV and Excel files. Remove duplicates, fix formatting, standardize dates, phones, and addresses.
 
-**Try it live:** https://rngbubba.github.io/csv-cleaner-saas/
+**Try it live:** https://rngbubba.github.io/mr-bubba-csv-cleaner/
 
 ## Features
 
