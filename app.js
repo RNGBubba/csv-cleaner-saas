@@ -17,8 +17,7 @@ const $ = (sel) => document.querySelector(sel);
 const $$ = (sel) => document.querySelectorAll(sel);
 
 const emailGate = $("#email-gate");
-const emailForm = $("#email-form");
-const emailInput = $("#email-input");
+const startCleaning = $("#start-cleaning");
 const rateMsg = $("#rate-msg");
 const uploadArea = $("#upload-area");
 const dropZone = $("#drop-zone");
@@ -44,32 +43,27 @@ function getTodayKey() {
   return new Date().toISOString().slice(0, 10);
 }
 
-function getRateLimit(email) {
+function getRateLimit() {
   const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
   const today = getTodayKey();
-  if (!data[email] || data[email].date !== today) {
-    data[email] = { date: today, count: 0 };
+  if (!data.device || data.device.date !== today) {
+    data.device = { date: today, count: 0 };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
   }
-  return data[email];
+  return data.device;
 }
 
-function canUse(email) {
-  const rl = getRateLimit(email);
-  return rl.count < RATE_LIMIT;
+function canUse() {
+  return getRateLimit().count < RATE_LIMIT;
 }
 
-function recordUse(email) {
-  const rl = getRateLimit(email);
+function recordUse() {
+  const rl = getRateLimit();
   rl.count += 1;
   const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
-  data[email] = rl;
+  data.device = rl;
   localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
   return rl.count;
-}
-
-function cleanEmail(email) {
-  return email.toLowerCase().trim();
 }
 
 // ========== Pyodide Setup ==========
@@ -528,33 +522,24 @@ function getChangeIcon(action) {
   return "✨";
 }
 
-function updateCreditsBadge(email) {
-  const rl = getRateLimit(email);
+function updateCreditsBadge() {
+  const rl = getRateLimit();
   const remaining = RATE_LIMIT - rl.count;
   creditsBadge.textContent = `${remaining} cleanup${remaining !== 1 ? "s" : ""} left today`;
   creditsBadge.classList.toggle("low", remaining <= 1);
 }
 
 // ========== Event Handlers ==========
-emailForm.addEventListener("submit", (e) => {
-  e.preventDefault();
-  const email = cleanEmail(emailInput.value);
-  if (!email || !email.includes("@")) {
-    showError("Please enter a valid email address.");
-    return;
-  }
-
-  if (!canUse(email)) {
-    showError("You've reached your daily limit.");
+startCleaning.addEventListener("click", () => {
+  if (!canUse()) {
+    showError("You've reached the device's daily limit.");
     showSection(outOfCredits);
     return;
   }
-
-  // Store email in session
-  sessionStorage.setItem("dc_email", email);
+  sessionStorage.setItem("dc_started", "true");
   showSection(uploadArea);
-  updateCreditsBadge(email);
-  showSuccess(`Welcome! You have ${RATE_LIMIT - getRateLimit(email).count} cleanups remaining today.`);
+  updateCreditsBadge();
+  showSuccess(`You have ${RATE_LIMIT - getRateLimit().count} cleanups remaining today.`);
 });
 
 dropZone.addEventListener("click", () => fileInput.click());
@@ -601,8 +586,7 @@ function handleFileSelect(file) {
 processBtn.addEventListener("click", async () => {
   if (!currentFile) return;
 
-  const email = sessionStorage.getItem("dc_email");
-  if (!email || !canUse(email)) {
+  if (!sessionStorage.getItem("dc_started") || !canUse()) {
     showSection(outOfCredits);
     return;
   }
@@ -627,7 +611,7 @@ processBtn.addEventListener("click", async () => {
     changes = result.changes;
 
     // Record the use
-    const usedCount = recordUse(email);
+    const usedCount = recordUse();
 
     // Show results
     showSection(resultsArea);
@@ -642,10 +626,10 @@ processBtn.addEventListener("click", async () => {
     downloadBtn.href = url;
     downloadBtn.download = `cleaned_${currentFile.name.replace(/\.[^.]+$/, "")}.csv`;
 
-    updateCreditsBadge(email);
+    updateCreditsBadge();
 
     // Warn if running low
-    const remaining = RATE_LIMIT - getRateLimit(email).count;
+    const remaining = RATE_LIMIT - getRateLimit().count;
     if (remaining <= 0) {
       setTimeout(() => alert("⚠️ You've used all your free cleanups for today! Visit our pricing section to hire us for unlimited access."), 500);
     }
@@ -689,8 +673,7 @@ resetBtn.addEventListener("click", () => {
   fileInfo.classList.add("hidden");
   fileInput.value = "";
 
-  const email = sessionStorage.getItem("dc_email");
-  if (email && canUse(email)) {
+  if (sessionStorage.getItem("dc_started") && canUse()) {
     showSection(uploadArea);
   } else {
     showSection(outOfCredits);
@@ -699,12 +682,11 @@ resetBtn.addEventListener("click", () => {
 
 // ========== Initialize ==========
 async function init() {
-  // Check if user has already entered email
-  const email = sessionStorage.getItem("dc_email");
-  if (email) {
-    if (canUse(email)) {
+  // Free quota is per device; no email collection is required.
+  if (sessionStorage.getItem("dc_started")) {
+    if (canUse()) {
       showSection(uploadArea);
-      updateCreditsBadge(email);
+      updateCreditsBadge();
     } else {
       showSection(outOfCredits);
     }
